@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/docker/postgres/init-databases.sql" value="d8caf2b1-a56b-48c5-b777-ac7ad0600f9c" />
+  </component>
+</project>

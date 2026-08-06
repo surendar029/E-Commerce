@@ -7,7 +7,7 @@
 ---
 
 ## 🎯 Current Task
-- **Phase 0: Workspace & Parent Project Setup** (Multi-module Maven Structure & Docker Infrastructure setup)
+- **Phase 2: Product Service & Redis Caching (`product-service`)** — Initial Setup & Domain Entities
 
 ---
 
@@ -19,14 +19,16 @@
 - [ ] Establish common shared library module (`common-dto` / `common-events`) for shared DTO records, custom exceptions, and event contracts.
 
 ### Phase 1: Auth & User Service (`user-service`)
-- [ ] Database setup (`user_db` PostgreSQL).
-- [ ] User Domain Entity & Repository layer.
-- [ ] DTO records (`RegisterRequest`, `AuthRequest`, `AuthResponse`, `UserResponse`).
-- [ ] Password Encoding (BCrypt) & User Registration logic with validations.
-- [ ] JWT Utility component (Access & Refresh token generation, signing, parsing).
-- [ ] `AuthService` & `AuthController` (REST Endpoints for register, login, refresh).
-- [ ] Custom Exception Handler (`@RestControllerAdvice`).
-- [ ] Unit & Integration tests for Auth flows.
+- [x] Database setup (`user_db` PostgreSQL).
+- [x] User Domain Entity & Repository layer.
+- [x] DTO records (`RegisterRequest`, `LoginRequest`, `AuthResponse`, `ErrorResponse`).
+- [x] Password Encoding (BCrypt) & User Registration logic with validations.
+- [x] JWT Utility component (Access token generation with embedded claims, signing, single-pass parsing).
+- [x] `UserService` & `UserController` (REST Endpoints for register, login/authenticate).
+- [x] Stateless `JwtAuthenticationFilter` integration with Spring Security.
+- [x] Custom Exception Handler (`@RestControllerAdvice`).
+- [x] Code audit & security review fixes.
+- [ ] Unit & Integration tests for Auth flows (Deferred to final integration stage).
 
 ### Phase 2: Product Service & Redis Caching (`product-service`)
 - [ ] Database setup (`product_db` PostgreSQL).

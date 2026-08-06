@@ -10,6 +10,8 @@ import dev.project.userservice.repository.UserRepository;
 import dev.project.userservice.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,9 +48,9 @@ public class UserService {
     }
 
     public AuthResponse authenticate(LoginRequest loginRequest){
-        authenticationManager.authenticate(new
-                UsernamePasswordAuthenticationToken(loginRequest.username(),loginRequest.password()));
-
-        return new AuthResponse(jwtUtil.generateToken(loginRequest.username()));
+        Authentication authenticate = authenticationManager.authenticate(new
+                UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
+        UserDetails userDetails= (UserDetails) authenticate.getPrincipal();
+        return new AuthResponse(jwtUtil.generateToken(userDetails.getUsername(),userDetails.getAuthorities()));
     }
 }

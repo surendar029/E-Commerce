@@ -2,6 +2,7 @@ package dev.project.userservice.config;
 
 import dev.project.userservice.service.CustomUserDetailsService;
 import dev.project.userservice.util.JwtUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,53 +10,53 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
     private final JwtUtil jwtUtil;
-    private final CustomUserDetailsService customUserDetailsService;
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        String token=null;
-        String username=null;
+        String token = null;
 
-        if(authHeader!=null && authHeader.startsWith("Bearer ")){
-            token=authHeader.substring(7);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
             try {
-                username=jwtUtil.extractUsername(token);
-            } catch (Exception e) {
-                log.warn("Invalid JWT token: {}", e.getMessage());
-            }
-        }
+                Claims claims = jwtUtil.extractClaims(token);
+                String username = claims.getSubject();
 
-        if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-            if(jwtUtil.validateToken(username,token)){
-                UsernamePasswordAuthenticationToken authenticationToken=new
-                        UsernamePasswordAuthenticationToken(
-                                username,
-                                null,
-                        null
-                        );
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                if (SecurityContextHolder.getContext().getAuthentication() == null && username != null) {
+                    List<SimpleGrantedAuthority> authorities = jwtUtil.extractAuthorities(claims);
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new
+                            UsernamePasswordAuthenticationToken(
+                            username,
+                            null,
+                            authorities
+                    );
+                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                }
+            } catch (Exception e) {
+                log.warn("Invalid or expired JWT token: {}", e.getMessage());
             }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }

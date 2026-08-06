@@ -1,6 +1,5 @@
 package dev.project.userservice.service;
 
-
 import dev.project.userservice.entity.UserEntity;
 import dev.project.userservice.repository.UserRepository;
 import org.springframework.security.core.userdetails.User;
@@ -24,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .authorities(user.getRole().name())
+                .authorities(user.getRole().getAuthorities())
                 .build();
     }
 }

@@ -1,0 +1,17 @@
+info:
+  name: Test
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: http://localhost:8081/test
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpcyIsImlhdCI6MTc4NTgxNzI3MSwiZXhwIjoxNzg1ODE4MTcxfQ._9oqf1dOtpCL5o7pBHlATGZLIWgVj32SnawfE-XEeC1oPdpTmJc95v2Rqkc07glVVL9y5ckTMi4EX6tcIVp_8g
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

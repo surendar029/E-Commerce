@@ -7,7 +7,7 @@
 ---
 
 ## 🎯 Current Task
-- **Phase 2: Product Service & Redis Caching (`product-service`)** — Initial Setup & Domain Entities
+- **Phase 3: Event-Driven Kafka Infrastructure & Search Service (`search-service`)**
 
 ---
 
@@ -31,12 +31,12 @@
 - [ ] Unit & Integration tests for Auth flows (Deferred to final integration stage).
 
 ### Phase 2: Product Service & Redis Caching (`product-service`)
-- [ ] Database setup (`product_db` PostgreSQL).
-- [ ] Domain Entities (`Product`, `Category`) & Repositories.
-- [ ] Product DTO records & Mapper.
-- [ ] Redis Cache configuration (Cache-Aside pattern using `@Cacheable`, `@CacheEvict`).
-- [ ] Product CRUD Service & Controller APIs.
-- [ ] Kafka Producer integration: Publish `ProductCreatedEvent` & `ProductUpdatedEvent`.
+- [x] Database setup (`product_db` PostgreSQL).
+- [x] Domain Entities (`Product`, `Category`) & Repositories.
+- [x] Product DTO records & Mapper.
+- [x] Redis Cache configuration (Cache-Aside pattern using `@Cacheable`, `@CacheEvict`).
+- [x] Product CRUD Service & Controller APIs.
+- [x] Kafka Producer integration: Publish `ProductCreatedEvent` & `ProductUpdatedEvent`.
 
 ### Phase 3: Event-Driven Kafka Infrastructure (`event-bus`)
 - [ ] Kafka Topic configuration (`product-events`, `order-events`, `inventory-events`, `payment-events`).
@@ -86,3 +86,4 @@
 
 ## 🔍 Completed Tasks
 - [x] Infrastructure `docker-compose.yml` with PostgreSQL (auto-init `user_db`, `product_db`, `inventory_db`, `order_db`, `payment_db`, `notification_db`), Kafka (KRaft mode), Redis, Elasticsearch, and Zipkin.
+- [x] Phase 2: `product-service` with PostgreSQL setup, domain records, Redis Cache-Aside pattern, CRUD REST APIs, and Kafka event producers.

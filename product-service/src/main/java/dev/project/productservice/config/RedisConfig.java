@@ -22,8 +22,10 @@ public class RedisConfig {
     public RedisCacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
 
         PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType("dev.project.productservice") // only trust classes from your own app package tree
-                .allowIfSubType("java.util") // needed for List, ArrayList, etc. as the outer container type
+                .allowIfSubType("dev.project.productservice") // your DTOs
+                .allowIfSubType("java.util")                  // List, ArrayList, ImmutableCollections wrappers
+                .allowIfSubType("java.math")                  // BigDecimal, BigInteger — for price/quantity fields
+                .allowIfSubType("java.time")                 // LocalDate, LocalDateTime, Instant
                 .build();
 
         GenericJacksonJsonRedisSerializer serializer =

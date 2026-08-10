@@ -1,5 +1,6 @@
 package dev.project.productservice.controller;
 
+import dev.project.productservice.dto.ProductPageResponse;
 import dev.project.productservice.dto.ProductRequest;
 import dev.project.productservice.dto.ProductResponse;
 import dev.project.productservice.service.ProductService;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponse>> getAllProducts(@PageableDefault(size = 2, sort = "id") Pageable pageable) {
+    public ResponseEntity<ProductPageResponse> getAllProducts(@PageableDefault(size = 5, sort = "id") Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts(pageable));
     }
 

@@ -9,6 +9,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 import java.time.Duration;
 
@@ -18,18 +20,29 @@ public class RedisConfig {
 
     @Bean
     public RedisCacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
-        RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+
+        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
+                .allowIfSubType("dev.project.productservice") // only trust classes from your own app package tree
+                .allowIfSubType("java.util") // needed for List, ArrayList, etc. as the outer container type
+                .build();
+
+        GenericJacksonJsonRedisSerializer serializer =
+                GenericJacksonJsonRedisSerializer.builder()
+                        .enableDefaultTyping(typeValidator)
+                        .build();
+
+        RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
                 .disableCachingNullValues()
                 .serializeKeysWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                        RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
+                )
                 .serializeValuesWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(GenericJacksonJsonRedisSerializer.builder().build())
+                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
                 );
 
         return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(cacheConfiguration)
+                .cacheDefaults(defaultConfig)
                 .build();
     }
 }
-

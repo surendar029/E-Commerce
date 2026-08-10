@@ -1,0 +1,22 @@
+info:
+  name: CreateCategory
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8082/api/v1/categories
+  body:
+    type: json
+    data: |
+      {
+        "name": "Sports & Fitness",
+        "description": "Gym equipment, athletic wear, and outdoor sports gear"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

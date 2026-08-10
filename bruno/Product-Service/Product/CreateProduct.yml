@@ -1,0 +1,25 @@
+info:
+  name: CreateProduct
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8082/api/v1/products
+  body:
+    type: json
+    data: |
+      {
+        "name": "Ergonomic Mesh Office Chair",
+        "description": "Adjustable lumbar support computer chair with breathable mesh",
+        "price": 189.00,
+        "stockQuantity": 35,
+        "categoryId": 3
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

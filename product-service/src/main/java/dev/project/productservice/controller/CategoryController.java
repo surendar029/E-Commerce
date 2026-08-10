@@ -1,5 +1,6 @@
 package dev.project.productservice.controller;
 
+import dev.project.productservice.dto.CategoryListResponse;
 import dev.project.productservice.dto.CategoryRequest;
 import dev.project.productservice.dto.CategoryResponse;
 import dev.project.productservice.service.CategoryService;
@@ -31,7 +32,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories(){
+    public ResponseEntity<CategoryListResponse> getAllCategories(){
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.getAllCategories());
     }
 }

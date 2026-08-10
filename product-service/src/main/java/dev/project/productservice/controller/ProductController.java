@@ -32,7 +32,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponse>> getAllProducts(@PageableDefault(size = 10, sort = "id") Pageable pageable) {
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(@PageableDefault(size = 2, sort = "id") Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts(pageable));
     }
 

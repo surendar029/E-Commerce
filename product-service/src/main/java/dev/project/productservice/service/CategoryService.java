@@ -1,5 +1,6 @@
 package dev.project.productservice.service;
 
+import dev.project.productservice.dto.CategoryListResponse;
 import dev.project.productservice.dto.CategoryRequest;
 import dev.project.productservice.dto.CategoryResponse;
 import dev.project.productservice.entity.CategoryEntity;
@@ -23,7 +24,7 @@ public class CategoryService {
     }
 
     @Transactional
-    @CacheEvict(value = "categories", allEntries = true)
+    @CacheEvict(value = {"categories", "categoriesList"}, allEntries = true)
     public CategoryResponse createCategory(CategoryRequest request) {
         if (categoryRepository.existsByName(request.name()))
             throw new CategoryAlreadyExistsException("Category with name '" + request.name() + "' already exists");
@@ -35,15 +36,17 @@ public class CategoryService {
 
     @Cacheable(value = "categories", key = "#id")
     public CategoryResponse getCategoryById(Long id) {
-        CategoryEntity entity = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
+        CategoryEntity entity = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
         return mapToResponse(entity);
     }
 
-    @Cacheable(value = "categories", key = "'all'")
-    public List<CategoryResponse> getAllCategories() {
-        return categoryRepository.findAll().stream().map(this::mapToResponse).toList();
+    @Cacheable(value = "categoriesList", key = "'all'")
+    public CategoryListResponse getAllCategories() {
+        return new CategoryListResponse(
+                categoryRepository.findAll().stream().map(this::mapToResponse).toList()
+        );
     }
-
 
     public CategoryResponse mapToResponse(CategoryEntity entity) {
         return new CategoryResponse(entity.getId(), entity.getName(), entity.getDescription());

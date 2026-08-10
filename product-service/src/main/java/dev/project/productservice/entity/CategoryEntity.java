@@ -3,9 +3,11 @@ package dev.project.productservice.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "categories")
-public class CategoryEntity {
+public class CategoryEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

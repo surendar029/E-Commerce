@@ -11,6 +11,7 @@ import dev.project.productservice.exception.ProductAlreadyExistsException;
 import dev.project.productservice.exception.ResourceNotFoundException;
 import dev.project.productservice.repository.CategoryRepository;
 import dev.project.productservice.repository.ProductRepository;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
@@ -77,7 +78,7 @@ public class ProductService {
 
 
     @Transactional
-    @CacheEvict(value = "products", key = "#id")
+    @CachePut(value = "products", key = "#id")
     public ProductResponse updateProduct(Long id, ProductRequest request) {
         ProductEntity productEntity = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
         CategoryEntity categoryEntity = categoryRepository.findById(request.categoryId()).orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + request.categoryId()));

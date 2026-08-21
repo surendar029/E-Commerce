@@ -1,0 +1,20 @@
+$kind: http-request
+description: ""
+url: http://localhost:8082/api/v1/products
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Wireless Bluetooth Headphones\",\r
+
+    \    \"description\": \"Noise-cancelling over-ear headphones with deep bass and long battery life\",\r
+
+    \    \"price\": 79.99,\r
+
+    \    \"stockQuantity\": 50,\r
+
+    \    \"categoryId\": 2\r
+
+    }"
+order: 1787288069270

@@ -1,5 +1,6 @@
 package dev.project.searchservice.document;
 
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -29,10 +30,10 @@ public class ProductDocument {
     private Long categoryId;
 
     @Field(type = FieldType.Keyword)
-    String categoryName;
+    private String categoryName;
 
-    public ProductDocument(String id, String name, String description, BigDecimal price,
-                           Integer stockQuantity, Long categoryId, String categoryName) {
+
+    public ProductDocument(String id, String name, String description, BigDecimal price, Integer stockQuantity, Long categoryId, String categoryName) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -43,30 +44,6 @@ public class ProductDocument {
     }
 
     public ProductDocument() {
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getId() {
@@ -85,6 +62,14 @@ public class ProductDocument {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -99,5 +84,21 @@ public class ProductDocument {
 
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

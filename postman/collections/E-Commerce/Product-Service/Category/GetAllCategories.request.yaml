@@ -1,0 +1,6 @@
+$kind: http-request
+name: GetAllCategories
+description: ""
+url: http://localhost:8082/api/v1/categories
+method: GET
+order: 4102617887117203

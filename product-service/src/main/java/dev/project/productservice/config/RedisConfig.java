@@ -22,7 +22,7 @@ public class RedisConfig {
     public RedisCacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
 
         PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType("dev.project.productservice") // your DTOs
+                .allowIfSubType("dev.project.productservice") // DTOs
                 .allowIfSubType("java.util")                  // List, ArrayList, ImmutableCollections wrappers
                 .allowIfSubType("java.math")                  // BigDecimal, BigInteger — for price/quantity fields
                 .allowIfSubType("java.time")                 // LocalDate, LocalDateTime, Instant

@@ -1,0 +1,6 @@
+$kind: http-request
+name: GetCategoryById
+description: ""
+url: http://localhost:8082/api/v1/categories/4
+method: GET
+order: 3918510649899774

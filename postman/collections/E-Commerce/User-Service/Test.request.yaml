@@ -1,0 +1,10 @@
+$kind: http-request
+name: Test
+description: ""
+url: http://localhost:8081/rest/test
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpcyIsImlhdCI6MTc4NjgyMDkyNiwicm9sZXMiOlsiUkVBRCIsIlJPTEVfVVNFUiJdLCJleHAiOjE3ODY4MjE4MjZ9.Zq9h9jtBC-2KdV6N1OLCP1ESZ3-7BpWqruWTM-IGhFNHmFHnZ9vD6WG9EnXn3iAnEr_5Ye7zTmEH23o3Q5XdNg
+order: 3372223845207500

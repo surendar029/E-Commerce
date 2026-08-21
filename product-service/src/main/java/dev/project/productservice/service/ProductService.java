@@ -27,10 +27,10 @@ public class ProductService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, ProductEvent> kafkaTemplate;
     private static final String TOPIC = KafkaProducerConfig.PRODUCT_EVENTS_TOPIC;
 
-    public ProductService(CategoryRepository categoryRepository, ProductRepository productRepository, KafkaTemplate<String, Object> kafkaTemplate) {
+    public ProductService(CategoryRepository categoryRepository, ProductRepository productRepository, KafkaTemplate<String, ProductEvent> kafkaTemplate) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.kafkaTemplate = kafkaTemplate;

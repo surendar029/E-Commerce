@@ -1,0 +1,15 @@
+$kind: http-request
+name: CreateCategory
+description: ""
+url: http://localhost:8082/api/v1/categories
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Toys & Games\",\r
+
+    \    \"description\": \"Kids' toys, board games, puzzles, and entertainment products\"\r
+
+    \  }"
+order: 1786869469844

@@ -7,7 +7,7 @@
 ---
 
 ## 🎯 Current Task
-- **Phase 3: Event-Driven Kafka Infrastructure & Search Service (`search-service`)**
+- **Phase 5: Inventory Service (`inventory-service`)**
 
 ---
 
@@ -39,14 +39,14 @@
 - [x] Kafka Producer integration: Publish `ProductCreatedEvent` & `ProductUpdatedEvent`.
 
 ### Phase 3: Event-Driven Kafka Infrastructure (`event-bus`)
-- [ ] Kafka Topic configuration (`product-events`, `order-events`, `inventory-events`, `payment-events`).
-- [ ] Custom Kafka Producer & Consumer serialization configurations (JSON/Avro).
-- [ ] Idempotent Consumer & Error Handling (Dead Letter Topic - DLT strategy).
+- [x] Kafka Topic configuration (`product-events` topic with partition/replica settings).
+- [x] Custom Kafka Producer & Consumer serialization configurations (JSON with ErrorHandlingDeserializer).
+- [x] Idempotent Consumer & Error Handling (Dead Letter Topic - DLT strategy with BackOff and DeadLetterPublishingRecoverer).
 
 ### Phase 4: Elasticsearch Search Service (`search-service`)
-- [ ] Elasticsearch connection & Index Mapping setup (`products` index).
-- [ ] Kafka Consumer listening to product events -> Syncing data into Elasticsearch.
-- [ ] Search Service & REST Controller for full-text search, fuzzy search, category filtering, and pagination.
+- [x] Elasticsearch connection & Index Mapping setup (`products` index, `ProductDocument` with text & keyword analyzers).
+- [x] Kafka Consumer listening to product events -> Syncing data into Elasticsearch (`ProductEventConsumer` handling `CREATED`, `UPDATED`, `DELETED`).
+- [x] Search Service & REST Controller for full-text search, fuzzy search, category filtering, price range, sorting, and pagination (`ProductSearchService` & `ProductSearchController`).
 
 ### Phase 5: Inventory Service (`inventory-service`)
 - [ ] Database setup (`inventory_db` PostgreSQL).

@@ -1,4 +1,12 @@
 package dev.project.inventoryservice.dto;
 
-public record ErrorResponse() {
+import java.time.LocalDateTime;
+
+public record ErrorResponse(
+        LocalDateTime timeStamp,
+        int status,
+        String errorMessage,
+        String message,
+        String path
+) {
 }

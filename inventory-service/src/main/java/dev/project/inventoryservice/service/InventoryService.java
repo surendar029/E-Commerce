@@ -7,7 +7,6 @@ import dev.project.inventoryservice.exception.InventoryNotFoundException;
 import dev.project.inventoryservice.repository.InventoryRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class InventoryService {

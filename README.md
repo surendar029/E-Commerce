@@ -26,6 +26,9 @@ The architecture incorporates modern distributed-system patterns including **dat
 * **Resilience & Observability**: Resilience4j, Zipkin, Micrometer
 * **DevOps & Tools**: Docker, Docker Compose, Maven, Postman
 ---
+## Category 
+- Microservices & Distributed Systems
+---
 ### 💾 Distributed Caching
 - **Redis Integration**: Fast shopping cart, session, and product catalog caching
 - **Cache-Aside Pattern**: Automatic cache invalidation on updates

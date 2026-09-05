@@ -15,6 +15,14 @@ A **production-grade, event-driven E-Commerce microservices architecture** built
 - **Horizontal Scaling**: Stateless services can scale independently
 - **Circuit Breakers**: Prevent cascading failures with Resilience4j
  ---
+ ## Tech Stack
+
+* **Backend**: Java 21, Spring Boot 3, Spring Security, Spring Data JPA
+* **Microservices & Messaging**: Spring Cloud, Apache Kafka
+* **Database & Cache**: PostgreSQL, Redis, Elasticsearch
+* **Resilience & Observability**: Resilience4j, Zipkin, Micrometer
+* **DevOps & Tools**: Docker, Docker Compose, Maven, Postman
+---
 ### 💾 Distributed Caching
 - **Redis Integration**: Fast shopping cart, session, and product catalog caching
 - **Cache-Aside Pattern**: Automatic cache invalidation on updates

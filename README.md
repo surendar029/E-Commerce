@@ -1,4 +1,4 @@
-# 🛍️ E-Commerce Microservices Platform
+# 🛍️ E-Commerce Microservices
 
 A **production-grade, event-driven E-Commerce microservices architecture** built with **Java 21**, **Spring Boot 3+**, **Apache Kafka**, **Redis**, and **Elasticsearch**. Designed for high scalability, fault tolerance, and asynchronous inter-service communication with resilient transaction processing, low-latency search caching, and robust distributed state management.
 

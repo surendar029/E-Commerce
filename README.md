@@ -6,7 +6,7 @@ A **production-grade, event-driven E-Commerce microservices architecture** built
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 - **Kafka-Based Event Bus**: Decoupled services communicate through well-defined event topics
 - **Redis Integration**: Fast shopping cart, session, and product catalog caching

@@ -2,7 +2,10 @@
 
 ## Description
 
-A **production-grade, event-driven E-Commerce microservices architecture** built with **Java 21**, **Spring Boot 3+**, **Apache Kafka**, **Redis**, and **Elasticsearch**. Designed for high scalability, fault tolerance, and asynchronous inter-service communication with resilient transaction processing, low-latency search caching, and robust distributed state management.
+A **production-grade, event-driven E-Commerce microservices platform** built with **Java 21 and Spring Boot 3**, designed for scalability, resilience, and asynchronous communication across distributed services.
+The system separates core business capabilities into independent services for **user authentication, product catalog, inventory management, and product search**, with **Apache Kafka** enabling event-driven communication between services. **Redis** provides low-latency caching, while **Elasticsearch** powers fast full-text product discovery and filtering.
+
+The architecture incorporates modern distributed-system patterns including **database-per-service, Saga-based transaction workflows, Transactional Outbox, Cache-Aside, Circuit Breaker, and distributed tracing**, making the project a practical implementation of scalable backend and microservices architecture.
 
 ---
 

@@ -1,10 +1,56 @@
-# 🛍️ E-Commerce Microservices
+# E-Commerce Microservices
 
 A **production-grade, event-driven E-Commerce microservices architecture** built with **Java 21**, **Spring Boot 3+**, **Apache Kafka**, **Redis**, and **Elasticsearch**. Designed for high scalability, fault tolerance, and asynchronous inter-service communication with resilient transaction processing, low-latency search caching, and robust distributed state management.
 
 ---
 
-## 📋 Table of Contents
+## ✨ Key Features
+
+- **Kafka-Based Event Bus**: Decoupled services communicate through well-defined event topics
+- **Redis Integration**: Fast shopping cart, session, and product catalog caching
+- **Elasticsearch Index**: Lightning-fast product discovery with fuzzy matching
+- **JWT-Based Security**: Stateless authentication with access/refresh token rotation
+- **Horizontal Scaling**: Stateless services can scale independently
+- **Circuit Breakers**: Prevent cascading failures with Resilience4j
+ ---
+### 💾 Distributed Caching
+- **Redis Integration**: Fast shopping cart, session, and product catalog caching
+- **Cache-Aside Pattern**: Automatic cache invalidation on updates
+- **TTL-Based Expiration**: Configurable cache lifetime management
+
+### 🔍 Full-Text Product Search
+- **Elasticsearch Index**: Lightning-fast product discovery with fuzzy matching
+- **Multi-Field Search**: Search across product name, description, category, and tags
+- **Aggregations & Facets**: Price ranges, category filtering, brand filtering
+- **Real-Time Indexing**: Automatic sync from Kafka events
+
+### 🔐 Authentication & Authorization
+- **JWT-Based Security**: Stateless authentication with access/refresh token rotation
+- **API Gateway Authentication**: Centralized JWT validation and header forwarding
+- **Role-Based Access Control (RBAC)**: Authorization at gateway and service levels
+
+### 📊 Saga Orchestration for Distributed Transactions
+- **Order Checkout Flow**: Order → Inventory Reservation → Payment Processing → Confirmation
+- **Compensating Transactions**: Automatic rollback on failures
+- **Event Sourcing Ready**: Complete audit trail of all state changes
+
+### 📈 Scalability & Resilience
+- **Retry Policies**: Automatic exponential backoff for transient failures
+- **Load Balancing**: Kafka partitioning for parallel processing
+- **Health Checks**: Liveness and readiness probes for orchestration
+
+### 🐳 Container-Ready Deployment
+- **Docker Images**: Pre-configured for all services
+- **Docker Compose**: Single-command local environment setup
+- **Multi-Database Setup**: Auto-initialization of service-specific databases
+- **Environment Configuration**: 12-factor app principles
+
+### 📡 Distributed Tracing
+- **Zipkin Integration**: End-to-end request tracing across services
+- **Micrometer Instrumentation**: Automatic metric collection and reporting
+
+---
+## Table of Contents
 
 - [Architecture Overview](#architecture-overview)
 - [Technology Stack](#technology-stack)
@@ -86,55 +132,6 @@ This project implements a **microservices architecture** following best practice
 | **Build** | Maven | 3.8+ | Dependency management & multi-module builds |
 
 ---
-
-## ✨ Key Features
-
-### 🔄 Event-Driven Asynchronous Communication
-- **Kafka-Based Event Bus**: Decoupled services communicate through well-defined event topics
-- **Reliable Event Publishing**: Transactional Outbox pattern ensures no lost events
-- **Dead Letter Topics (DLT)**: Automatic handling of failed message processing
-- **Idempotent Consumers**: Safe event replay without side effects
-
-### 💾 Distributed Caching
-- **Redis Integration**: Fast shopping cart, session, and product catalog caching
-- **Cache-Aside Pattern**: Automatic cache invalidation on updates
-- **TTL-Based Expiration**: Configurable cache lifetime management
-
-### 🔍 Full-Text Product Search
-- **Elasticsearch Index**: Lightning-fast product discovery with fuzzy matching
-- **Multi-Field Search**: Search across product name, description, category, and tags
-- **Aggregations & Facets**: Price ranges, category filtering, brand filtering
-- **Real-Time Indexing**: Automatic sync from Kafka events
-
-### 🔐 Authentication & Authorization
-- **JWT-Based Security**: Stateless authentication with access/refresh token rotation
-- **API Gateway Authentication**: Centralized JWT validation and header forwarding
-- **Role-Based Access Control (RBAC)**: Authorization at gateway and service levels
-
-### 📊 Saga Orchestration for Distributed Transactions
-- **Order Checkout Flow**: Order → Inventory Reservation → Payment Processing → Confirmation
-- **Compensating Transactions**: Automatic rollback on failures
-- **Event Sourcing Ready**: Complete audit trail of all state changes
-
-### 📈 Scalability & Resilience
-- **Horizontal Scaling**: Stateless services can scale independently
-- **Circuit Breakers**: Prevent cascading failures with Resilience4j
-- **Retry Policies**: Automatic exponential backoff for transient failures
-- **Load Balancing**: Kafka partitioning for parallel processing
-- **Health Checks**: Liveness and readiness probes for orchestration
-
-### 🐳 Container-Ready Deployment
-- **Docker Images**: Pre-configured for all services
-- **Docker Compose**: Single-command local environment setup
-- **Multi-Database Setup**: Auto-initialization of service-specific databases
-- **Environment Configuration**: 12-factor app principles
-
-### 📡 Distributed Tracing
-- **Zipkin Integration**: End-to-end request tracing across services
-- **Micrometer Instrumentation**: Automatic metric collection and reporting
-
----
-
 ## 📁 Project Structure
 
 ```

@@ -28,7 +28,7 @@ public class ProductEventConsumer {
             }
             case DELETED -> {
                 log.info("Deleting product from Elasticsearch: {}", event.id());
-                searchService.delete(event.id());
+                searchService.deleteProduct(event.id());
             }
         }
     }

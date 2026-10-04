@@ -27,7 +27,7 @@ public class ProductDocument {
 
     private Long categoryId;
 
-    private String category;
+    private String categoryName;
 }
 
 

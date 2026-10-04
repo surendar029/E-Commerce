@@ -1,4 +1,15 @@
-package dev.project.searchservice;
+package dev.project.searchservice.dto;
 
-public class ErrorResponse {
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+
+@Builder
+public record ErrorResponse(
+        LocalDateTime localDateTime,
+        int status,
+        String error,
+        String message,
+        String path
+) {
 }

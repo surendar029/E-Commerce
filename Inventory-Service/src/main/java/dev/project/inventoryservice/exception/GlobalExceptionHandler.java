@@ -20,6 +20,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(e.getMessage(), request, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InventoryNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleInventoryNotFound(InventoryNotFoundException e, HttpServletRequest request) {
+        return buildErrorResponse(e.getMessage(), request, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(InsufficientStockException.class)
     public ResponseEntity<ErrorResponse> handleInsufficientStock(InsufficientStockException e, HttpServletRequest request) {
         return buildErrorResponse(e.getMessage(), request, HttpStatus.CONFLICT);

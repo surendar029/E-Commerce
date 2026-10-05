@@ -1,6 +1,5 @@
 package dev.project.searchservice.service;
 
-
 import dev.project.searchservice.document.ProductDocument;
 import dev.project.searchservice.dto.ProductSearchResponse;
 import dev.project.searchservice.event.ProductEvent;
@@ -10,32 +9,44 @@ import dev.project.searchservice.repository.ProductSearchRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.Criteria;
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-
 @Service
 public class SearchService {
+
     private final ProductSearchRepository productSearchRepository;
     private final ElasticsearchOperations elasticsearchOperations;
 
-    public SearchService(ProductSearchRepository productSearchRepository, ElasticsearchOperations elasticsearchOperations) {
+    public SearchService(
+            ProductSearchRepository productSearchRepository,
+            ElasticsearchOperations elasticsearchOperations
+    ) {
         this.productSearchRepository = productSearchRepository;
         this.elasticsearchOperations = elasticsearchOperations;
     }
 
+    // --------------------------------------------------
+    // Get product by ID
+    // --------------------------------------------------
+
     public ProductSearchResponse getProductById(Long productId) {
-        ProductDocument document = productSearchRepository.findById(productId).orElseThrow(() ->
-                new ResourceNotFoundException("Product not found for Product ID: " + productId));
+        ProductDocument document = productSearchRepository
+                .findById(productId).orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Product not found for Product ID: " + productId));
         return buildResponse(document);
     }
+
+    // --------------------------------------------------
+    // Search products
+    // --------------------------------------------------
 
     public Page<ProductSearchResponse> searchProducts(
             String query,
@@ -45,47 +56,122 @@ public class SearchService {
             BigDecimal maxPrice,
             Pageable pageable
     ) {
-        Criteria criteria = new Criteria();
 
-        if (query != null && !query.isBlank()) {
-            String trimmed = query.trim();
-            Criteria textCriteria = new Criteria("name").contains(trimmed)
-                    .or(new Criteria("description").contains(trimmed));
-            criteria = criteria.and(textCriteria);
-        }
+        // Validate price range
+        if (minPrice != null
+                && maxPrice != null
+                && minPrice.compareTo(maxPrice) > 0) {
 
-        if (categoryId != null) criteria = criteria.and(new Criteria("categoryId").is(categoryId));
-
-        if (categoryName != null && !categoryName.trim().isEmpty())
-            criteria = criteria.and(new Criteria("categoryName").is(categoryName.trim()));
-
-        if (minPrice != null && maxPrice != null && minPrice.compareTo(maxPrice) > 0) {
             throw new InvalidPriceRangeException(
                     "Minimum price cannot be greater than maximum price"
             );
         }
 
-        if (minPrice != null && maxPrice != null) {
-            criteria = criteria.and(new Criteria("price").between(minPrice, maxPrice));
-        } else if (minPrice != null) {
-            criteria = criteria.and(new Criteria("price").greaterThanEqual(minPrice));
-        } else if (maxPrice != null) {
-            criteria = criteria.and(new Criteria("price").lessThanEqual(maxPrice));
-        }
+        NativeQuery searchQuery = NativeQuery.builder()
+                .withQuery(q -> q.bool(bool -> {
 
-        CriteriaQuery criteriaQuery = new CriteriaQuery(criteria).setPageable(pageable);
-        SearchHits<ProductDocument> searchHits = elasticsearchOperations.search(criteriaQuery, ProductDocument.class);
+                    // ------------------------------------------
+                    // Keyword search
+                    // name OR description
+                    // ------------------------------------------
 
-        List<ProductSearchResponse> result = searchHits.stream()
-                .map(SearchHit::getContent)
-                .map(this::buildResponse)
-                .toList();
+                    if (query != null && !query.isBlank()) {
 
-        return new PageImpl<>(result, pageable, searchHits.getTotalHits());
+                        bool.must(m -> m.multiMatch(mm -> mm
+                                .query(query.trim())
+                                .fields("name", "description")
+                        ));
+                    }
+
+                    // ------------------------------------------
+                    // Category ID filter
+                    // ------------------------------------------
+
+                    if (categoryId != null) {
+
+                        bool.filter(f -> f.term(t -> t
+                                .field("categoryId")
+                                .value(categoryId)
+                        ));
+                    }
+
+                    // ------------------------------------------
+                    // Category name filter
+                    // ------------------------------------------
+
+                    if (categoryName != null
+                            && !categoryName.isBlank()) {
+
+                        bool.filter(f -> f.term(t -> t
+                                .field("categoryName")
+                                .value(categoryName.trim())
+                        ));
+                    }
+
+                    // ------------------------------------------
+                    // Minimum price
+                    // price >= minPrice
+                    // ------------------------------------------
+
+                    if (minPrice != null) {
+
+                        bool.filter(f -> f.range(r -> r
+                                .number(n -> n
+                                        .field("price")
+                                        .gte(minPrice.doubleValue())
+                                )
+                        ));
+                    }
+
+                    // ------------------------------------------
+                    // Maximum price
+                    // price <= maxPrice
+                    // ------------------------------------------
+
+                    if (maxPrice != null) {
+
+                        bool.filter(f -> f.range(r -> r
+                                .number(n -> n
+                                        .field("price")
+                                        .lte(maxPrice.doubleValue())
+                                )
+                        ));
+                    }
+
+                    return bool;
+                }))
+                .withPageable(pageable)
+                .build();
+
+        // Execute Elasticsearch query
+        SearchHits<ProductDocument> searchHits =
+                elasticsearchOperations.search(
+                        searchQuery,
+                        ProductDocument.class
+                );
+
+        // Convert Elasticsearch documents
+        // to API response objects
+        List<ProductSearchResponse> result =
+                searchHits.stream()
+                        .map(SearchHit::getContent)
+                        .map(this::buildResponse)
+                        .toList();
+
+        // Return paginated response
+        return new PageImpl<>(
+                result,
+                pageable,
+                searchHits.getTotalHits()
+        );
     }
 
+    // --------------------------------------------------
+    // Index / update product
+    // --------------------------------------------------
 
     public void indexProduct(ProductEvent event) {
+
         ProductDocument product = ProductDocument.builder()
                 .id(event.id())
                 .name(event.name())
@@ -94,14 +180,27 @@ public class SearchService {
                 .categoryId(event.categoryId())
                 .categoryName(event.categoryName())
                 .build();
+
         productSearchRepository.save(product);
     }
 
+    // --------------------------------------------------
+    // Delete product
+    // --------------------------------------------------
+
     public void deleteProduct(Long productId) {
+
         productSearchRepository.deleteById(productId);
     }
 
-    public ProductSearchResponse buildResponse(ProductDocument document) {
+    // --------------------------------------------------
+    // Build API response
+    // --------------------------------------------------
+
+    public ProductSearchResponse buildResponse(
+            ProductDocument document
+    ) {
+
         return ProductSearchResponse.builder()
                 .id(document.getId())
                 .name(document.getName())

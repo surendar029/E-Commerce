@@ -3,6 +3,7 @@ package dev.project.productservice.service;
 
 import dev.project.productservice.dto.ProductRequest;
 import dev.project.productservice.dto.ProductResponse;
+import dev.project.productservice.dto.UpdateProductRequest;
 import dev.project.productservice.entity.CategoryEntity;
 import dev.project.productservice.entity.ProductEntity;
 import dev.project.productservice.event.ProductEvent;
@@ -63,7 +64,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponse updateProduct(Long id, ProductRequest request) {
+    public ProductResponse updateProduct(Long id, UpdateProductRequest request) {
         ProductEntity productEntity = productRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Product not found with ID: " + id)
         );

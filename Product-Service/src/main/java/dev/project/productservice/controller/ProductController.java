@@ -2,6 +2,7 @@ package dev.project.productservice.controller;
 
 import dev.project.productservice.dto.ProductRequest;
 import dev.project.productservice.dto.ProductResponse;
+import dev.project.productservice.dto.UpdateProductRequest;
 import dev.project.productservice.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -35,13 +36,8 @@ public class ProductController {
         return ResponseEntity.ok(productService.listProduct());
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello boss!");
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductRequest request) {
         return ResponseEntity.ok(productService.updateProduct(id, request));
     }
 

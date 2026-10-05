@@ -7,6 +7,11 @@ spring:
       server:
         webflux:
           routes:
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                -PATH=/api/v1/order/**
+
             - id: product-service
               uri: lb://product-service
               predicates:

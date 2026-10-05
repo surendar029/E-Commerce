@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
-@RequestMapping("/test")
+@RequestMapping("/api/v1/search")
 @RestController
 public class SearchController {
 

@@ -1,4 +1,7 @@
 package dev.project.orderservice.dto;
 
-public class InventoryDetails {
+public record InventoryDetails(
+        Long productId,
+        Integer availableQuantity
+) {
 }

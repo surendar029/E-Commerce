@@ -1,4 +1,11 @@
 package dev.project.orderservice.dto;
 
-public class ProductDetails {
+import java.math.BigDecimal;
+
+public record ProductDetails(
+        Long id,
+        String name,
+        BigDecimal price,
+        String categoryName
+) {
 }
